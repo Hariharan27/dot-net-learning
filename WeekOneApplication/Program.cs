@@ -14,11 +14,11 @@ class Program
          * instance variable
          * static variable
          */
-        Person hari = new Person("Hariharan",1994);
+        Person hari = new Person("Hariharan", 1994);
         hari.DisplayDetails();
-        Person sri = new Person("Srikanth",1995);
+        Person sri = new Person("Srikanth", 1995);
         sri.DisplayDetails();
-        Person vimal = new Person("Vimal",1995);
+        Person vimal = new Person("Vimal", 1995);
         vimal.DisplayDetails();
 
         /* data type with value type and reference type
@@ -26,9 +26,9 @@ class Program
          * dynamic 
          * nullable type 
          */
-        Student student = new Student("Hariharan", 30, false, 'S', "Internet Surfing", 164.5,"Hello",null);
+        Student student = new Student("Hariharan", 30, false, 'S', "Internet Surfing", 164.5, "Hello", null);
         student.displayInformation();
-
+        
         // if example 
         ConditionalStatement conditionalStatement = new ConditionalStatement();
         conditionalStatement.GetUserAge();
@@ -47,6 +47,32 @@ class Program
 
         // example of continue and break
         conditionalStatement.ExampleOfBreakContinue();
+
+
+        FunctionExample functionExample = new FunctionExample();
+        int num = 10;
+        functionExample.CallByValueExampleMethod(num);
+        Console.WriteLine($"num call by value in the {num}");
+        functionExample.CallByReferenceMethod(ref num);
+        Console.WriteLine($"num call by reference in the {num}");
+        int value;
+        functionExample.ExampleOutKeyword(out value);
+        Console.WriteLine($"The output is from the value {value}");
+
+
+
+        ArrayExample arrayExample = new ArrayExample();
+        arrayExample.initializeArray();
+        arrayExample.arrayOperations();
+
+        int[] numberArray = { 10, 20, 30, 40, 50 };
+        Console.WriteLine(string.Join(",", numberArray));
+
+
+        arrayExample.ChangeTheArray(numberArray);
+        arrayExample.TwoDimentionalArray();
+        arrayExample.ThreeDimentionalArray();
+        arrayExample.ExampleOfJaggedArray();
 
         Console.ReadKey();
     }
