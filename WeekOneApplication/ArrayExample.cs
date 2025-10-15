@@ -100,6 +100,12 @@ namespace WeekOneApplication
 
 		}
 
+
+		public void ExampleofParams(string title, string[] names)
+		{
+			Console.WriteLine($"{title}: {string.Join(",",names)}");
+		}
+
 	}
 }
 

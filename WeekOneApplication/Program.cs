@@ -3,8 +3,12 @@ using WeekOneApplication;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] paramList)
     {
+
+        Console.WriteLine($"The Run params are {string.Join(",", paramList)}");
+
+
         // Sample progrom for the topic example 
         Example example = new Example("Hariharan", 30);
         example.ShowMyDetails();
@@ -74,7 +78,71 @@ class Program
         arrayExample.ThreeDimentionalArray();
         arrayExample.ExampleOfJaggedArray();
 
+        arrayExample.ExampleofParams("Team Members:",new string[] {"Hari","Vimal","Anjali"});
+
+
+        Car car1 = new Car("Toyota", "Corolla",2022);
+        car1.DisplayDetails();
+        Car car2 = new Car("Honda", "City",2022);
+        car2.DisplayDetails();
+
+        StaticExample.a = 10;
+
+        StaticExample.DisplayStatic();
+
+        Console.Write(Days.Monday);
+        Console.WriteLine((int)Days.Monday);
+
+          Dog dog = new Dog("Nicky");
+         dog.Eat();
+         dog.Bark();
+         dog.Walk();
+        dog.MakesSound();
+
+         Cat cat = new Cat("Micky");
+         cat.Eat();
+         cat.Meow();
+         cat.Walk();
+
+         Bird bird = new Bird();
+         bird.fly();
+         bird.run();
+
+        Book b1 = new Book("Rich Dad and Poor Dad");
+        Book b2 = new Book("English Grammer");
+        Book b3 = new Book("Three Idiots");
+
+        List<Book> books = new List<Book>();
+        books.Add(b1);
+        books.Add(b2);
+        books.Add(b3);
+
+        Library library = new Library("Central Library", books);
+        library.DisplayBooks();
+        library.AddBook(new Book("Four idiots"));
+        library.RemoveBook(b2);
+        library.DisplayBooks();
+
+
+        Calculator calculator = new Calculator();
+        Console.WriteLine($"{calculator.Add(10, 5)}");
+        Console.WriteLine($"{calculator.Add(10, 15, 20)}");
+
+
         Console.ReadKey();
     }
+
+
+    enum Days
+    {
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
+    }
+
 }
 
