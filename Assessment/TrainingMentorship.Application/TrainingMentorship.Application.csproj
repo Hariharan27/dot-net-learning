@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrainingMentorship.Domain\TrainingMentorship.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DTOs\" />
+    <None Remove="DTOs\Auth\" />
+    <None Remove="Services\" />
+    <None Remove="interfaces\" />
+    <None Remove="DTOs\Program\" />
+    <None Remove="DTOs\TrainingProgram\" />
+    <None Remove="DTOs\Task\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\Auth\" />
+    <Folder Include="Services\" />
+    <Folder Include="interfaces\" />
+    <Folder Include="DTOs\Program\" />
+    <Folder Include="DTOs\TrainingProgram\" />
+    <Folder Include="DTOs\Task\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.20" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.20" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.20" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,35 @@
+﻿@model List<TrainingMentorship.Application.DTOs.Program.TrainingProgramListDto>
+
+@{
+    var role = ViewBag.Role as string;
+}
+
+<h2>Training Programs</h2>
+
+@if (role == "Admin")
+{
+    <a class="btn btn-primary mb-3" asp-action="Create">Create Program</a>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Title</td>
+                <td>@p.Description</td>
+                <td>
+                    <a asp-controller="TrainingProgram" asp-action="Details" asp-route-id="@p.Id"
+                       class="btn btn-primary btn-sm">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

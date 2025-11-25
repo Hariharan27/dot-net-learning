@@ -1,0 +1,40 @@
+﻿@model List<TrainingMentorship.Application.DTOs.TrainingProgram.ProgramTraineeTaskDto>
+
+<h3>Trainee Tasks</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>
+                    @if (task.Status == "Pending")
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                    else if (task.Status == "InProgress")
+                    {
+                        <span class="badge bg-primary">In Progress</span>
+                    }
+                    else if (task.Status == "Completed")
+                    {
+                        <span class="badge bg-success">Completed</span>
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" onclick="history.back()">Back</a>

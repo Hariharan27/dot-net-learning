@@ -1,0 +1,46 @@
+﻿@model TrainingMentorship.MVC.Models.AssignTraineeViewModel;
+
+@{
+    ViewData["Title"] = "Assign Trainee";
+}
+
+<h2>Assign Trainee to Program</h2>
+
+<form asp-action="AssignTrainee" method="post">
+
+    <input type="hidden" asp-for="ProgramId" />
+
+    <!-- Trainee Dropdown -->
+    <div class="mb-3">
+        <label class="form-label">Select Trainee</label>
+        <select asp-for="TraineeId" class="form-select">
+            <option value="">-- Select Trainee --</option>
+            @foreach (var t in Model.AvailableTrainees)
+            {
+                <option value="@t.Id">@t.FullName (@t.Email)</option>
+            }
+        </select>
+    </div>
+
+    <!-- Mentor Multi-select Dropdown -->
+    <div class="mb-3">
+        <label class="form-label">Assign Mentor(s)</label>
+        <select asp-for="MentorIds"
+                class="form-select"
+                size="5"
+                multiple="multiple"
+                name="MentorIds">
+
+            @foreach (var m in Model.Mentors)
+            {
+                <option value="@m.MentorId">@m.FullName (@m.Email)</option>
+            }
+        </select>
+
+            <small class="text-muted">Hold CTRL (Windows) or CMD (Mac) to select multiple.</small>
+</div>
+
+    <button type="submit" class="btn btn-primary">Assign Trainee</button>
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.ProgramId">Cancel</a>
+
+</form>

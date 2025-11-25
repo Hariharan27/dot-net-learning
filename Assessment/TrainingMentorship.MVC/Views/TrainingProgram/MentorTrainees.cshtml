@@ -1,0 +1,37 @@
+﻿@model List<TrainingMentorship.Application.DTOs.TrainingProgram.ProgramTraineeDto>
+
+<h3>Trainees Under Mentor</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr>
+                <td>@t.FullName</td>
+                <td>@t.Email</td>
+                <td>
+                    <a class="btn btn-sm btn-primary"
+                       asp-controller="TrainingProgram"
+                       asp-action="TraineeTasks"
+                       asp-route-programId="@ViewBag.ProgramId"
+                       asp-route-traineeId="@t.TraineeId">
+                        View Tasks
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="TrainingProgram"
+   asp-action="Details"
+   asp-route-id="@ViewBag.ProgramId"
+   class="btn btn-secondary">Back</a>

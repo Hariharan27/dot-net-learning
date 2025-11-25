@@ -1,0 +1,287 @@
+﻿@model TrainingMentorship.Application.DTOs.TrainingProgram.TrainingProgramDetailsDto
+
+@{
+    var role = ViewBag.Role as string;
+}
+
+<h2>@Model.Title</h2>
+<p>@Model.Description</p>
+
+<div class="row mb-3">
+    @if (role == "Admin")
+    {
+        <div class="col-md-3"><b>Mentors:</b> @Model.MentorCount</div>
+    }
+    <div class="col-md-3"><b>Trainees:</b> @Model.TraineeCount</div>
+    <div class="col-md-3"><b>Tasks:</b> @Model.TaskCount</div>
+</div>
+
+<!-- ============================================================= -->
+<!-- ============ ADMIN ONLY – TOP BUTTONS ======================== -->
+<!-- ============================================================= -->
+@if (role == "Admin")
+{
+    <div class="mb-4">
+        <a class="btn btn-primary me-2"
+           asp-action="AssignMentor"
+           asp-route-programId="@Model.Id">
+            ➕ Assign Mentor
+        </a>
+
+        <a class="btn btn-success"
+           asp-action="AssignTrainee"
+           asp-route-programId="@Model.Id">
+            ➕ Assign Trainee
+        </a>
+
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+            ➕ Create Task
+        </button>
+
+    </div>
+}
+
+<hr />
+
+<!-- ============================================================= -->
+<!-- ================== ADMIN VIEW (MENTOR LIST) ================= -->
+<!-- ============================================================= -->
+@if (role == "Admin")
+{
+    <h4>Mentors</h4>
+
+    @if (Model.Mentors != null && Model.Mentors.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var m in Model.Mentors)
+                {
+                    <tr>
+                        <td>@m.FullName</td>
+                        <td>@m.Email</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm"
+                               asp-controller="TrainingProgram"
+                               asp-action="MentorTrainees"
+                               asp-route-programId="@Model.Id"
+                               asp-route-mentorId="@m.MentorId">
+                                View Trainees
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No mentors assigned to this program.</p>
+    }
+}
+
+<!-- ============================================================= -->
+<!-- ==================== MENTOR VIEW (MY TRAINEES) ============== -->
+<!-- ============================================================= -->
+@if (role == "Mentor")
+{
+    <h4>My Trainees</h4>
+
+    @if (Model.Trainees != null && Model.Trainees.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Trainee Name</th>
+                    <th>Email</th>
+                    <th>View Tasks</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var t in Model.Trainees)
+                {
+                    <tr>
+                        <td>@t.FullName</td>
+                        <td>@t.Email</td>
+                        <td>
+                            <a class="btn btn-sm btn-primary"
+                               asp-controller="TrainingProgram"
+                               asp-action="TraineeTasks"
+                               asp-route-programId="@Model.Id"
+                               asp-route-traineeId="@t.TraineeId">
+                                View Tasks
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No trainees assigned to you for this program.</p>
+    }
+}
+
+@if (role == "Trainee")
+{
+    <h4>My Tasks</h4>
+
+    @if (Model.Tasks != null && Model.Tasks.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr>
+                        <td>@task.Title</td>
+                        <td>@task.Description</td>
+                        <td>
+
+                    @if (task.Status == "Pending")
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                    else if (task.Status == "InProgress")
+                    {
+                        <span class="badge bg-primary">In Progress</span>
+                    }
+                    else if (task.Status == "Completed")
+                    {
+                        <span class="badge bg-success">Completed</span>
+                    }
+
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#updateStatusModal"
+                                    data-taskid="@task.TaskId"
+                                    data-status="@task.Status"
+                                    data-programid="@Model.Id">
+                                Update
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No tasks assigned to you for this program.</p>
+    }
+}
+
+
+
+<!-- CREATE TASK MODAL -->
+<div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="post" asp-action="CreateTask">
+
+                <div class="modal-body">
+                    <input type="hidden" name="ProgramId" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input name="Title" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="Description" class="form-control" required></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- UPDATE STATUS MODAL -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form method="post" asp-action="UpdateTaskStatus">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStatusModalLabel">Update Task Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="updateTask_TaskItemId" name="TaskItemId" />
+                    <input type="hidden" id="updateTask_ProgramId" name="ProgramId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select id="updateTask_Status" name="Status" class="form-select">
+                            <option value="Pending">Pending</option>
+                            <option value="InProgress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>var modal = document.getElementById('updateStatusModal');
+
+        modal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+
+            var taskId = button.getAttribute('data-taskid');
+            var status = button.getAttribute('data-status');
+            var programId = button.getAttribute('data-programid');
+
+            document.getElementById('updateTask_TaskItemId').value = taskId;
+            document.getElementById('updateTask_ProgramId').value = programId;
+
+            document.getElementById('updateTask_Status').value = status;
+        });</script>
+}
